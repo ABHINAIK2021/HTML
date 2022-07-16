@@ -2571,6 +2571,15 @@ Last update : 2016-10-19
 
         /*max-width:320px*/
     </style>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4JTEXERGHN"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-4JTEXERGHN');
+    </script>
 </head>
 
 <body>
@@ -2932,7 +2941,7 @@ Last update : 2016-10-19
                     <div class="col-md-offset-1 col-md-5 col-sm-6">
                         <div class="single-contact-box">
                             <div class="contact-form">
-                                <form name="contact" netlify>
+                                <form name="contact" onsubmit="onSubmit(event)">
                                     <div class="row">
                                         <div class="col-sm-6 col-xs-12">
                                             <div class="form-group">
@@ -3033,6 +3042,31 @@ Last update : 2016-10-19
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
     <script>
+        const onSubmit = async e => {
+            e.preventDefault();
+
+            let data = {
+                name: e.target.name.value,
+                email: e.target.email.value,
+                subject: e.target.subject.value,
+                message: e.target.message.value
+            };
+
+            await fetch('https://myportfolioemailer.herokuapp.com/email', {
+                method: 'POST',
+                mode: 'cors',
+                cache: 'no-cache',
+                headers: {
+                    "Content-type": "application/json",
+                },
+                body: JSON.stringify(data)
+            }).then((response) => {
+                console.log('Success:', response.json());
+            }).catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+
         $(document).ready(function () {
             "use strict";
 
